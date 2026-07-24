@@ -6,6 +6,7 @@ import me.ryanhamshire.GPFlags.GPFlags;
 import me.ryanhamshire.GPFlags.MessageSpecifier;
 import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.SetFlagResult;
+import me.ryanhamshire.GPFlags.util.Util;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -39,6 +40,10 @@ public class FlagDef_NoMobSpawnsType extends FlagDefinition {
 
         if (isNotAllowed(type, flag)) {
             CreatureSpawnEvent.SpawnReason reason = event.getSpawnReason();
+            if (Util.isPyroFishingCrabSpawn(event.getEntity(), reason)) {
+                event.getEntity().setMetadata(this.ALLOW_TARGET_TAG, new FixedMetadataValue(GPFlags.getInstance(), Boolean.TRUE));
+                return;
+            }
             if (reason == CreatureSpawnEvent.SpawnReason.SLIME_SPLIT) return;
             if (reason == CreatureSpawnEvent.SpawnReason.SPAWNER || reason == CreatureSpawnEvent.SpawnReason.SPAWNER_EGG) {
                 event.getEntity().setMetadata(this.ALLOW_TARGET_TAG, new FixedMetadataValue(GPFlags.getInstance(), Boolean.TRUE));

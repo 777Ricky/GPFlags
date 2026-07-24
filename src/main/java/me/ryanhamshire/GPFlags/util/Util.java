@@ -7,6 +7,7 @@ import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.PlayerData;
 import org.bukkit.*;
+import org.bukkit.block.Biome;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
@@ -24,8 +25,49 @@ public class Util {
 
     public static boolean isMonster(Entity entity) {
         EntityType type = entity.getType();
-        return (entity instanceof Monster || type == EntityType.GHAST || type == EntityType.MAGMA_CUBE || type == EntityType.SHULKER
-                || type == EntityType.PHANTOM || type == EntityType.SLIME || type == EntityType.HOGLIN);
+        return entity instanceof Monster || isMonster(type);
+    }
+
+    public static boolean isMonster(EntityType type) {
+        Class<? extends Entity> entityClass = type.getEntityClass();
+        return (entityClass != null && Monster.class.isAssignableFrom(entityClass)) ||
+                type == EntityType.GHAST || type == EntityType.MAGMA_CUBE || type == EntityType.SHULKER ||
+                type == EntityType.PHANTOM || type == EntityType.SLIME || type == EntityType.HOGLIN;
+    }
+
+    private static boolean isPyroFishingEnabled() {
+        return Bukkit.getPluginManager().isPluginEnabled("PyroFishingPro") ||
+                Bukkit.getPluginManager().isPluginEnabled("PyroFishing");
+    }
+
+    private static boolean isPyroFishingSilverfish(EntityType type) {
+        return type == EntityType.SILVERFISH && isPyroFishingEnabled();
+    }
+
+    public static boolean isPyroFishingCrab(Entity entity) {
+        if (!isPyroFishingSilverfish(entity.getType())) return false;
+
+        String name = entity.getCustomName();
+        if (name == null) return false;
+        name = ChatColor.stripColor(name);
+        return name != null && name.toLowerCase(Locale.ROOT).contains("crab");
+    }
+
+    public static boolean isPyroFishingCrabSpawn(Entity entity, SpawnReason reason) {
+        if (isPyroFishingCrab(entity)) return true;
+        return isPyroFishingCrabSpawn(entity.getType(), entity.getLocation(), reason);
+    }
+
+    public static boolean isPyroFishingCrabSpawn(EntityType type, Location location, SpawnReason reason) {
+        if (!isPyroFishingSilverfish(type)) return false;
+        if (reason == SpawnReason.CUSTOM) return true;
+
+        World world = location.getWorld();
+        if (world == null) return false;
+        for (Entity nearby : world.getNearbyEntities(location, 8, 8, 8)) {
+            if (nearby instanceof FishHook) return true;
+        }
+        return false;
     }
 
     public static boolean canAccess(Claim claim, Player player) {
@@ -90,6 +132,7 @@ public class Util {
         return StringUtil.copyPartialMatches(arg, flags, new ArrayList<>());
     }
 
+    @SuppressWarnings("deprecation")
     public static List<String> paramTab(CommandSender sender, String[] args) {
         switch (args[0].toLowerCase(Locale.ROOT)) {
             case "commandblacklist":
@@ -141,6 +184,17 @@ public class Util {
                     }
                 }
                 return StringUtil.copyPartialMatches(args[1], entityTypes, new ArrayList<>());
+
+            case "changebiome":
+                ArrayList<String> biomes = new ArrayList<>();
+                for (Biome biome : Registry.BIOME) {
+                    String biomeKey = biome.getKey().getKey();
+                    if (sender.hasPermission("gpflags.flag.changebiome." + biomeKey)) {
+                        biomes.add(biomeKey);
+                    }
+                }
+                biomes.sort(String.CASE_INSENSITIVE_ORDER);
+                return StringUtil.copyPartialMatches(args[1], biomes, new ArrayList<>());
 
             case "noopendoors":
                 if (args.length != 2) return null;

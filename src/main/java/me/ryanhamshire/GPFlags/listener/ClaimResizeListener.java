@@ -57,5 +57,14 @@ public class ClaimResizeListener implements Listener {
             }
         }
 
+        Flag changeBiome = manager.getRawClaimFlag(claimFrom, "ChangeBiome");
+        if (changeBiome != null) {
+            FlagDefinition def = manager.getFlagDefinitionByName("ChangeBiome");
+            if (changeBiome.getSet()) {
+                def.onFlagUnset(claimFrom);
+                def.onFlagSet(claimTo, changeBiome.getParameters());
+            }
+        }
+
     }
 }

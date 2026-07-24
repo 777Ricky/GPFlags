@@ -132,7 +132,8 @@ public class FlagManager {
         }
 
         String key = def.getName().toLowerCase();
-        if (!claimFlags.containsKey(key) && isActive) {
+        Flag previousFlag = claimFlags.get(key);
+        if (isActive && (previousFlag == null || !previousFlag.getSet())) {
             def.incrementInstances();
         }
         claimFlags.put(key, flag);

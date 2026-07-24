@@ -1,7 +1,10 @@
 package me.ryanhamshire.GPFlags.flags;
 
+import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
 import me.ryanhamshire.GPFlags.*;
 import me.ryanhamshire.GPFlags.util.Util;
+import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -14,20 +17,44 @@ public class FlagDef_NoMobSpawns extends FlagDefinition {
         super(manager, plugin);
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntitySpawn(CreatureSpawnEvent event) {
-        EntityType type = event.getEntityType();
-        if (type == EntityType.PLAYER || type == EntityType.ARMOR_STAND) return;
-
         SpawnReason reason = event.getSpawnReason();
-        if (reason == SpawnReason.SLIME_SPLIT) return;
-        WorldSettings settings = this.settingsManager.get(event.getEntity().getWorld());
-        if (settings.noMonsterSpawnIgnoreSpawners && Util.isSpawnerReason(reason)) return;
-
-        Flag flag = this.getFlagInstanceAtLocation(event.getLocation(), null);
-        if (flag == null) return;
+        if (!blocksSpawn(event.getEntity(), reason)) return;
 
         event.setCancelled(true);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onPreCreatureSpawn(PreCreatureSpawnEvent event) {
+        EntityType type = event.getType();
+        SpawnReason reason = event.getReason();
+        Location location = event.getSpawnLocation();
+        if (!blocksSpawn(location, type, reason)) return;
+
+        event.setCancelled(true);
+        event.setShouldAbortSpawn(true);
+    }
+
+    boolean blocksSpawn(Entity entity, SpawnReason reason) {
+        if (Util.isPyroFishingCrabSpawn(entity, reason)) return false;
+        return shouldBlockSpawn(entity.getLocation(), entity.getType(), reason);
+    }
+
+    boolean blocksSpawn(Location location, EntityType type, SpawnReason reason) {
+        if (Util.isPyroFishingCrabSpawn(type, location, reason)) return false;
+        return shouldBlockSpawn(location, type, reason);
+    }
+
+    private boolean shouldBlockSpawn(Location location, EntityType type, SpawnReason reason) {
+        if (type == EntityType.PLAYER || type == EntityType.ARMOR_STAND) return false;
+        if (reason == SpawnReason.SLIME_SPLIT) return false;
+
+        WorldSettings settings = this.settingsManager.get(location.getWorld());
+        if (settings.noMobSpawnIgnoreSpawners && Util.isSpawnerReason(reason)) return false;
+
+        Flag flag = this.getFlagInstanceAtLocation(location, null);
+        return flag != null;
     }
 
     @Override
