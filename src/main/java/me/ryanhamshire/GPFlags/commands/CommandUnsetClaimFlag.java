@@ -24,7 +24,7 @@ import java.util.List;
 public class CommandUnsetClaimFlag implements TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
-        if (!sender.hasPermission("gpflags.command.unsetclaimflag")) {
+        if (!sender.hasPermission("gpflags.command.setclaimflag")) {
             MessagingUtil.sendMessage(sender, TextMode.Err, Messages.NoCommandPermission, command.toString());
             return true;
         }
@@ -58,7 +58,7 @@ public class CommandUnsetClaimFlag implements TabExecutor {
             return true;
         }
 
-        if (!Util.canEdit(player, claim)) {
+        if (!Util.canConfigureClaimFlags(player, claim, def)) {
             MessagingUtil.sendMessage(player, TextMode.Err, Messages.NotYourClaim);
             return true;
         }

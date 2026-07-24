@@ -45,6 +45,7 @@ public class FlagDef_NoMobSpawnsType extends FlagDefinition {
                 return;
             }
             if (reason == CreatureSpawnEvent.SpawnReason.SLIME_SPLIT) return;
+            if (reason == CreatureSpawnEvent.SpawnReason.COMMAND) return;
             if (reason == CreatureSpawnEvent.SpawnReason.SPAWNER || reason == CreatureSpawnEvent.SpawnReason.SPAWNER_EGG) {
                 event.getEntity().setMetadata(this.ALLOW_TARGET_TAG, new FixedMetadataValue(GPFlags.getInstance(), Boolean.TRUE));
                 return;

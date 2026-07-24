@@ -46,6 +46,7 @@ public class FlagDef_NoMonsterSpawns extends FlagDefinition {
     private boolean shouldBlockSpawn(Location location, EntityType type, SpawnReason reason) {
         if (!Util.isMonster(type)) return false;
         if (reason == SpawnReason.SLIME_SPLIT) return false;
+        if (reason == SpawnReason.COMMAND) return false;
 
         WorldSettings settings = this.settingsManager.get(location.getWorld());
         if (settings.noMonsterSpawnIgnoreSpawners && Util.isSpawnerReason(reason)) return false;
