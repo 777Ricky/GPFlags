@@ -133,6 +133,7 @@ public class GPFlagsConfig {
             this.flagManager.registerFlagDefinition(new FlagDef_NoPlayerDamage(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NoPlayerDamageByMonster(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NoEnter(this.flagManager, plugin));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoExit(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NoMobDamage(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NoFluidFlow(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_HealthRegen(this.flagManager, plugin));
@@ -165,6 +166,7 @@ public class GPFlagsConfig {
             this.flagManager.registerFlagDefinition(new FlagDef_PermissionFly(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NoEnterPlayer(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_PlayerWeather(this.flagManager, plugin));
+            this.flagManager.registerFlagDefinition(new FlagDef_Fog(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_PlayerTime(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_PlayerGamemode(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NoVineGrowth(this.flagManager, plugin));
@@ -181,6 +183,7 @@ public class GPFlagsConfig {
             this.flagManager.registerFlagDefinition(new FlagDef_AllowBlockExplosions(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_ProtectNamedMobs(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NoBlockGravity(this.flagManager, plugin));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoGravity(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_ChangeBiome(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NoOpenDoors(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NoVehicle(this.flagManager, plugin));

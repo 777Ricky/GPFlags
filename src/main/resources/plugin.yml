@@ -161,6 +161,15 @@ permissions:
   gpflags.bypass.noenter:
     description: Makes a player immune to noenter and noenterplayer flags
     default: op
+  gpflags.bypass.noexit:
+    description: Makes a player immune to noexit flags
+    default: op
+  gpflags.bypass.fog:
+    description: Makes a player immune to fog flags
+    default: op
+  gpflags.bypass.nogravity:
+    description: Makes a player immune to nogravity flags
+    default: op
   gpflags.bypass.novehicle:
     description: Makes a player immune to novehicle flags
     default: op

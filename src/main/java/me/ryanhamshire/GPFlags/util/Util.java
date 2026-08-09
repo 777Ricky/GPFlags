@@ -212,6 +212,13 @@ public class Util {
                 biomes.sort(String.CASE_INSENSITIVE_ORDER);
                 return StringUtil.copyPartialMatches(args[1], biomes, new ArrayList<>());
 
+            case "fog":
+                ArrayList<String> fogDistances = new ArrayList<>();
+                for (int distance = 2; distance <= 32; distance++) {
+                    fogDistances.add(String.valueOf(distance));
+                }
+                return StringUtil.copyPartialMatches(args[1], fogDistances, new ArrayList<>());
+
             case "noopendoors":
                 if (args.length != 2) return null;
                 List<String> doorType = Arrays.asList("doors", "trapdoors", "gates");

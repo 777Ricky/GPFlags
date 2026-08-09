@@ -140,6 +140,10 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.DisabledNoEnter, "Stopped requiring permission to enter this area.", null);
         this.addDefault(defaults, Messages.NoEnterMessage, "You have been blocked from entering this claim", null);
 
+        this.addDefault(defaults, Messages.EnabledNoExit, "Players now require /AccessTrust or higher permission to exit this area.", null);
+        this.addDefault(defaults, Messages.DisabledNoExit, "Stopped requiring permission to exit this area.", null);
+        this.addDefault(defaults, Messages.NoExitMessage, "You have been blocked from exiting this claim.", null);
+
         this.addDefault(defaults, Messages.EnableNoFluidFlow, "Now preventing source fluid blocks from spreading in this land claim.", null);
         this.addDefault(defaults, Messages.DisableNoFluidFlow, "Stopped limiting fluid flow in this land claim.", null);
 
@@ -242,6 +246,10 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.PlayerWeatherSet, "Player weather in this claim has been set to {0}.", "0: Weather to send");
         this.addDefault(defaults, Messages.PlayerWeatherUnSet, "Player weather has been unset in this claim.", null);
 
+        this.addDefault(defaults, Messages.FogDistanceRequired, "Fog distance must be a whole number from 2 to 32 chunks.", null);
+        this.addDefault(defaults, Messages.FogSet, "Fog has been enabled with a view distance of {0} chunks.", "0: View distance in chunks");
+        this.addDefault(defaults, Messages.FogUnSet, "Fog has been disabled in this claim.", null);
+
         this.addDefault(defaults, Messages.PlayerTimeRequired, "Time required <day/noon/night/midnight>.", null);
         this.addDefault(defaults, Messages.PlayerTimeSet, "Player time in this claim has been set to {0}.", "0: Time to send");
         this.addDefault(defaults, Messages.PlayerTimeUnSet, "Player time has been unset in this claim.", null);
@@ -324,6 +332,9 @@ public class FlagsDataStore {
 
         this.addDefault(defaults, Messages.EnableNoBlockGravity, "Disabling block gravity in this area.", null);
         this.addDefault(defaults, Messages.DisableNoBlockGravity, "Enabling block gravity in this area.", null);
+
+        this.addDefault(defaults, Messages.EnableNoGravity, "Disabling player gravity in this area.", null);
+        this.addDefault(defaults, Messages.DisableNoGravity, "Enabling player gravity in this area.", null);
 
         this.addDefault(defaults, Messages.EnableNoBlockForm, "Blocks will no longer form based on world conditions.", null);
         this.addDefault(defaults, Messages.DisableNoBlockForm, "Blocks will once again form based on world conditions.", null);
