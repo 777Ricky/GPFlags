@@ -17,14 +17,20 @@ public class PlayerPreClaimBorderEvent extends PlayerEvent implements Cancellabl
     private static HandlerList handlerList = new HandlerList();
     private Claim claimFrom, claimTo;
     private Location locFrom, locTo;
+    private final boolean teleport;
     private boolean cancelled = false;
 
     public PlayerPreClaimBorderEvent(Player who, Claim claimFrom, Claim claimTo, Location from, Location to) {
+        this(who, claimFrom, claimTo, from, to, false);
+    }
+
+    public PlayerPreClaimBorderEvent(Player who, Claim claimFrom, Claim claimTo, Location from, Location to, boolean teleport) {
         super(who);
         this.claimFrom = claimFrom;
         this.claimTo = claimTo;
         this.locFrom = from;
         this.locTo = to;
+        this.teleport = teleport;
     }
 
     /**
@@ -61,6 +67,14 @@ public class PlayerPreClaimBorderEvent extends PlayerEvent implements Cancellabl
      */
     public Location getLocTo() {
         return locTo;
+    }
+
+    /**
+     * Gets whether this border crossing was initiated by a teleport event.
+     * @return true for teleports, false for physical movement
+     */
+    public boolean isTeleport() {
+        return teleport;
     }
 
     @Override

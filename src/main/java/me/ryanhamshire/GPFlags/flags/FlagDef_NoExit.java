@@ -6,6 +6,7 @@ import me.ryanhamshire.GPFlags.GPFlags;
 import me.ryanhamshire.GPFlags.MessageSpecifier;
 import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.TextMode;
+import me.ryanhamshire.GPFlags.event.PlayerPreClaimBorderEvent;
 import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
@@ -16,6 +17,13 @@ public class FlagDef_NoExit extends PlayerMovementFlagDefinition {
 
     public FlagDef_NoExit(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
+    }
+
+    @Override
+    public boolean allowMovement(PlayerPreClaimBorderEvent event) {
+        if (event.isTeleport()) return true;
+        return allowMovement(event.getPlayer(), event.getLocFrom(), event.getLocTo(),
+                event.getClaimFrom(), event.getClaimTo());
     }
 
     @Override

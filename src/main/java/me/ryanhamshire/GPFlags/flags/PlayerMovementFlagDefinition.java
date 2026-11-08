@@ -43,14 +43,20 @@ public abstract class PlayerMovementFlagDefinition extends FlagDefinition {
         return true;
     }
 
+    /**
+     * Allows movement flags to inspect additional context about a border crossing.
+     * @param event border crossing event
+     * @return false if the flag denied movement or true if it allowed it
+     */
+    public boolean allowMovement(PlayerPreClaimBorderEvent event) {
+        return allowMovement(event.getPlayer(), event.getLocFrom(), event.getLocTo(),
+                event.getClaimFrom(), event.getClaimTo());
+    }
+
     @EventHandler
     public void onPreMove(PlayerPreClaimBorderEvent event) {
         Player player = event.getPlayer();
-        Location from = event.getLocFrom();
-        Location to = event.getLocTo();
-        Claim claimFrom = event.getClaimFrom();
-        Claim claimTo = event.getClaimTo();
-        if (!this.allowMovement(player, from, to, claimFrom, claimTo)) {
+        if (!this.allowMovement(event)) {
             event.setCancelled(true);
             player.setVelocity(new Vector());
         }

@@ -40,6 +40,8 @@ public class PlayerListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     private void onMove(PlayerMoveEvent event) {
+        if (event instanceof PlayerTeleportEvent) return;
+
         Location locTo = event.getTo();
         Location locFrom = event.getFrom();
         Player player = event.getPlayer();
@@ -64,7 +66,7 @@ public class PlayerListener implements Listener {
         Location locFrom = event.getFrom();
         Player player = event.getPlayer();
         Set<Player> group = Util.getMovementGroup(player);
-        if (flagsPreventMovement(locTo, locFrom, group)) {
+        if (flagsPreventMovement(locTo, locFrom, group, true)) {
             event.setCancelled(true);
         }
     }
@@ -171,6 +173,10 @@ public class PlayerListener implements Listener {
      * @return If the movement was prevented
      */
     public static boolean flagsPreventMovement(Location locTo, Location locFrom, Set<Player> players) {
+        return flagsPreventMovement(locTo, locFrom, players, false);
+    }
+
+    private static boolean flagsPreventMovement(Location locTo, Location locFrom, Set<Player> players, boolean teleport) {
         if (locTo.getBlockX() == locFrom.getBlockX() &&
                 locTo.getBlockY() == locFrom.getBlockY() &&
                 locTo.getBlockZ() == locFrom.getBlockZ()) {
@@ -196,7 +202,8 @@ public class PlayerListener implements Listener {
         // validate that the entire manifest is allowed to move to the location
         ArrayList<PlayerPreClaimBorderEvent> events = new ArrayList<>();
         for (Player passenger : players) {
-            PlayerPreClaimBorderEvent event = new PlayerPreClaimBorderEvent(passenger, claimFrom, claimTo, locFromAdj, locToAdj);
+            PlayerPreClaimBorderEvent event = new PlayerPreClaimBorderEvent(
+                    passenger, claimFrom, claimTo, locFromAdj, locToAdj, teleport);
             Bukkit.getPluginManager().callEvent(event);
             if (event.isCancelled()) return true;
             events.add(event);
